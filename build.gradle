@@ -1,19 +1,27 @@
 plugins {
-    id 'java'
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
 }
 
-group 'ru.otus'
-version '1.0.0-SNAPSHOT'
+allprojects {
+    group "ru.otus"
 
-repositories {
-    mavenCentral()
-}
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
+    def guavaVersion = "31.0.1-jre"
 
-test {
-    useJUnitPlatform()
+    apply plugin: "io.spring.dependency-management"
+    dependencyManagement {
+        dependencies {
+            dependency "com.google.guava:guava:$guavaVersion"
+            dependency "org.junit.jupiter:junit-jupiter-api:5.9.0"
+            dependency "org.junit.jupiter:junit-jupiter-engine:5.9.0"
+            dependency "org.assertj:assertj-core:3.23.1"
+            dependency "org.mockito:mockito-core:4.8.0"
+            dependency "org.mockito:mockito-junit-jupiter:4.8.0"
+        }
+    }
 }
