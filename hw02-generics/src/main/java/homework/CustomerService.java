@@ -19,7 +19,9 @@ public class CustomerService {
 
     public Entry<Customer, String> getNext(Customer customer) {
         Set<Entry<Customer, String>> entryList = customerMap.entrySet();
-        Optional<Entry<Customer, String>> tmp = entryList.stream().filter(entry -> entry.getKey().getScores() > customer.getScores()).findFirst();
+        Optional<Entry<Customer, String>> tmp = entryList.stream()
+                .filter(entry -> entry.getKey().getScores() > customer.getScores())
+                .findFirst();
         if (tmp.isPresent()) {
             return new AbstractMap.SimpleEntry<>(new Customer(tmp.get().getKey()), tmp.get().getValue());
         } else return null;
