@@ -1,5 +1,7 @@
 package homework;
 
+import java.util.Objects;
+
 public class Customer {
     private final long id;
     private String name;
@@ -53,7 +55,10 @@ public class Customer {
 
         Customer customer = (Customer) o;
 
-        return this.hashCode() == o.hashCode();
+        if (this.hashCode() != customer.hashCode()) {
+            return false;
+        }
+        return Objects.equals(this.id, customer.getId());
     }
 
     @Override
