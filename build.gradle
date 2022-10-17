@@ -17,6 +17,11 @@ allprojects {
     dependencyManagement {
         dependencies {
             dependency "com.google.guava:guava:$guavaVersion"
+            dependency "org.junit.jupiter:junit-jupiter-api:5.9.0"
+            dependency "org.junit.jupiter:junit-jupiter-engine:5.9.0"
+            dependency "org.assertj:assertj-core:3.23.1"
+            dependency "org.mockito:mockito-core:4.8.0"
+            dependency "org.mockito:mockito-junit-jupiter:4.8.0"
         }
     }
 }
