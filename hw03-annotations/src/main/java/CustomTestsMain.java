@@ -11,9 +11,20 @@ public class CustomTestsMain {
         System.out.println("Before method");
     }
 
+    @Before
+    public void aaa() {
+        System.out.println("next ll be exception");
+        throw new RuntimeException();
+    }
+
     @Test
     public void testMethod() {
         System.out.println("Into test method");
+    }
+
+    @Test
+    public void testExceptionMethod() {
+        throw new NullPointerException("Try NPE");
     }
 
     @After
