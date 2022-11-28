@@ -34,6 +34,6 @@ public class CalcDemo {
         System.out.println(summator.getSumLastThreeValues());
         System.out.println(summator.getSomeValue());
         System.out.println(summator.getSum());
-        System.out.println("spend msec:" + delta + ", sec:" + (delta / 1000));
+        System.out.println("spend msec: " + delta + ", sec:" + (delta / 1000));
     }
 }
