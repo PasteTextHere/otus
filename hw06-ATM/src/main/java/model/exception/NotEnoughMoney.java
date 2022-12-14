@@ -1,6 +1,6 @@
-package model;
+package model.exception;
 
-public class NotEnoughMoney extends RuntimeException {
+public class NotEnoughMoney extends ATMException {
 
     public NotEnoughMoney(String message) {
         super(message);
