@@ -3,7 +3,7 @@ package model;
 import interfaces.Banknotes;
 
 public enum Dollars implements Banknotes {
-    DOLLAR(100);
+    DOLLAR(150);
 
     private final int banknoteValue;
 

@@ -1,14 +1,13 @@
 import interfaces.Banknotes;
 import interfaces.Cell;
 import model.CellDollarImpl;
+import model.CellRoubleImpl;
 import model.Dollars;
 import model.Roubles;
-import model.CellRoubleImpl;
 
 import java.util.Map;
 
 import static model.Roubles.*;
-import static model.Roubles.FIVE_THOUSAND;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,18 +22,19 @@ public class Main {
 
         var rouble = new ATMRoubles(f);
 
-        var map = Map.of(Roubles.FIFTY, 5);
+        var mapInputRoubles = Map.of(Roubles.FIFTY, 5);
+        var mapInputDollars = Map.of(Dollars.DOLLAR, 4);
 
         rouble.showBalance();
-        rouble.putBanknotes(map);
+        rouble.putBanknotes(mapInputRoubles);
         rouble.showBalance();
 
         var us = new ATMus(
                 Map.of(Dollars.DOLLAR, new CellDollarImpl(Dollars.DOLLAR))
         );
-
+        System.out.println("***************************");
         us.showBalance();
-
-//        us.putBanknotes();
+        us.putBanknotes(mapInputDollars);
+        us.showBalance();
     }
 }
