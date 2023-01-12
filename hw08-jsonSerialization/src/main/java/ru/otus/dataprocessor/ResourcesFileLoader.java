@@ -9,9 +9,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class ResourcesFileLoader implements Loader {
-
+    private static final Logger log = Logger.getLogger(ResourcesFileLoader.class.getName());
     private final String fileName;
 
     public ResourcesFileLoader(String fileName) {
@@ -24,10 +25,9 @@ public class ResourcesFileLoader implements Loader {
             Reader reader = new BufferedReader(inputStreamReader);
             Gson gson = new Gson();
             Measurement[] measures = gson.fromJson(reader, Measurement[].class);
-            System.out.printf("Can't serialize objects from file %s%n", fileName);
             return List.of(measures);
         } catch (IOException e) {
-            System.out.printf("Can't serialize objects from file %s%n", fileName);
+            log.warning(String.format("Can't serialize objects from file %s%n", fileName));
             throw new FileProcessException(e.getMessage());
         }
     }

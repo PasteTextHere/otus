@@ -8,11 +8,12 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 public class FileSerializer implements Serializer {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final static Logger log = Logger.getLogger(FileSerializer.class.getName());
     private final String fileName;
 
     public FileSerializer(String fileName) {
@@ -26,7 +27,7 @@ public class FileSerializer implements Serializer {
             String json = gson.toJson(data);
             writer.write(json);
         } catch (IOException e) {
-            System.out.println("Can't write this map to file");
+            log.warning("Can't write this map to file");
             throw new FileProcessException(e.getMessage());
         }
     }
