@@ -6,3 +6,5 @@ include 'hw04-resources'
 include 'hw06-ATM'
 include 'hw07-messageHandler'
 include 'hw08-jsonSerialization'
+include 'hw05-autoLogging'
+
