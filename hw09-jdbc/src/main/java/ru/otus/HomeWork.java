@@ -15,7 +15,7 @@ import ru.otus.jdbc.mapper.*;
 import javax.sql.DataSource;
 
 public class HomeWork {
-    private static final String URL = "jdbc:postgresql://192.168.50.80:5430/demoDB";
+    private static final String URL = "jdbc:postgresql://127.0.0.1:5430/demoDB";
     private static final String USER = "usr";
     private static final String PASSWORD = "pwd";
 
