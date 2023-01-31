@@ -1,20 +1,18 @@
 package ru.otus.crm.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "client")
+@ToString
 public class Client implements Cloneable {
 
     @Id
@@ -25,10 +23,10 @@ public class Client implements Cloneable {
     @Column(name = "name")
     private String name;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "client")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "client", orphanRemoval = true)
     private List<Phone> phones;
 
     public Client(String name) {
@@ -41,16 +39,25 @@ public class Client implements Cloneable {
         this.name = name;
     }
 
-    @Override
-    public Client clone() {
-        return new Client(this.id, this.name);
+    public Client(Long id, String name, Address address, List<Phone> phones) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phones = phones;
+        for (Phone phone : this.phones) {
+            phone.setClient(this);
+        }
     }
 
     @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public Client clone() {
+        Client clonedClient = new Client(this.id, this.name);
+        clonedClient.setAddress(new Address(this.getAddress().getId(), this.getAddress().getStreet()));
+        clonedClient.setPhones(this.getPhones()
+                .stream()
+                .map(phone -> new Phone(phone.getId(), phone.getNumber(), clonedClient))
+                .toList()
+        );
+        return clonedClient;
     }
 }
