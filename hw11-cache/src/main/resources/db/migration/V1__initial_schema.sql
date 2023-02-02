@@ -15,5 +15,4 @@ create table manager
     param1 varchar(50)
 );
 
-insert into manager
-//TODO: добавить в таблицу значение которое будет считываться и его не будет в кеше
+insert into manager(no, label) values (55, 'withoutCache')

@@ -1,19 +1,29 @@
 package ru.otus.cachehw;
 
 
-import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 public class MyCache<K, V> implements HwCache<K, V> {
+    private final static Logger logger = LoggerFactory.getLogger("DefaultCacheListener");
+    HwListener<K, V> defaultListener = new HwListener<>() {
+        @Override
+        public void notify(K key, V value, String action) {
+            logger.info("key:{}, value:{}, action: {}", key, value, action);
+        }
+    };
+    private boolean defaultLogger = true;
 
-    private final List<HwListener<K,V>> listeners;
-    private final Map<K,V> cache;
+    private final List<HwListener<K, V>> listeners;
+    private final Map<K, V> cache;
 
     public MyCache() {
         this.cache = new WeakHashMap<>();
-        this.listeners = new ArrayList<>();
+        this.listeners = List.of(defaultListener);
     }
 
     @Override
@@ -37,11 +47,19 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     @Override
     public void addListener(HwListener<K, V> listener) {
+        if (defaultLogger) {
+            listeners.remove(defaultListener);
+        }
         listeners.add(listener);
+        defaultLogger = false;
     }
 
     @Override
     public void removeListener(HwListener<K, V> listener) {
         listeners.remove(listener);
+        if (listeners.isEmpty()) {
+            listeners.add(defaultListener);
+            defaultLogger = true;
+        }
     }
 }

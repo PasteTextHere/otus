@@ -43,7 +43,7 @@ public class DbServiceManagerImpl implements DBServiceManager {
 
     @Override
     public Optional<Manager> getManager(long no) {
-        Optional<Manager> manager = Optional.of(cache.get(no));
+        Optional<Manager> manager = Optional.ofNullable(cache.get(no));
         if (manager.isEmpty()) {
             manager = transactionRunner.doInTransaction(connection -> {
                 Optional<Manager> managerOptional = managerDataTemplate.findById(connection, no);
