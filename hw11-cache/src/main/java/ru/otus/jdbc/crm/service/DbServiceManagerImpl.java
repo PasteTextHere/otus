@@ -48,6 +48,7 @@ public class DbServiceManagerImpl implements DBServiceManager {
             manager = transactionRunner.doInTransaction(connection -> {
                 Optional<Manager> managerOptional = managerDataTemplate.findById(connection, no);
                 log.info("manager: {}", managerOptional);
+                managerOptional.ifPresent(value -> cache.put(value.getNo(), managerOptional.get()));
                 return managerOptional;
             });
         }
