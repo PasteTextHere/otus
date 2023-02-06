@@ -1,6 +1,9 @@
 plugins {
     id "io.spring.dependency-management" version "1.0.11.RELEASE"
     id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
+    id "org.springframework.boot" version "2.7.2" apply false
+    id "com.google.cloud.tools.jib" version "3.2.1" apply false
+    id "fr.brouillard.oss.gradle.jgitver" version "0.10.0-rc03" apply false
 }
 
 allprojects {
@@ -43,4 +46,17 @@ allprojects {
             force("com.google.errorprone:error_prone_annotations:2.7.1")
         }
     }
+}
+
+task managedVersions {
+    doLast {
+        dependencyManagement.managedVersions.each {
+            println it
+        }
+    }
+}
+
+//gradle -q hello
+task hello {
+    println 'Hello world!'
 }
