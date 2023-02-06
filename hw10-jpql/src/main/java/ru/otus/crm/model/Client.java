@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "client")
-@ToString
 public class Client implements Cloneable {
 
     @Id
