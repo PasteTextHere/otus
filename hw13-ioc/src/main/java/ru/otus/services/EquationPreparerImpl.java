@@ -12,7 +12,7 @@ public class EquationPreparerImpl implements EquationPreparer {
     @Override
     public List<Equation> prepareEquationsFor(int base) {
         List<Equation> equations = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
+        for (int i = 1; i < 3; i++) {
             var multiplicationEquation = new MultiplicationEquation(base, i);
             var divisionEquation = new DivisionEquation(multiplicationEquation.getResult(), base);
             equations.add(multiplicationEquation);
