@@ -10,11 +10,27 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class AppComponentsContainerImpl implements AppComponentsContainer {
-        private final List<Object> appComponents = new ArrayList<>();
-        private final Map<String, Object> appComponentsByName = new HashMap<>();
+    private final List<Object> appComponents = new ArrayList<>();
+    private final Map<String, Object> appComponentsByName = new HashMap<>();
 
     public AppComponentsContainerImpl(Class<?> initialConfigClass) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         processConfig(initialConfigClass);
+    }
+
+    @Override
+    public <C> C getAppComponent(Class<C> componentClass) {
+        List<Object> components = appComponents.stream().filter(component -> componentClass.isAssignableFrom(component.getClass())).toList();
+        if (components.size() > 1) {
+            throw new RuntimeException("Component is more then one instance");
+        } else if (components.size() == 0) {
+            throw new RuntimeException("Component is absent in container");
+        }
+        return (C) components.get(0);
+    }
+
+    @Override
+    public <C> C getAppComponent(String componentName) {
+        return (C) Optional.ofNullable(appComponentsByName.get(componentName)).orElseThrow(() -> new RuntimeException("Component is absent in container"));
     }
 
     private void processConfig(Class<?> configClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -39,33 +55,17 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         }
     }
 
+    private Object[] getArgs(Parameter[] parameters) {
+        Object[] args = new Object[parameters.length];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = getAppComponent(parameters[i].getType());
+        }
+        return args;
+    }
+
     private void checkConfigClass(Class<?> configClass) {
         if (!configClass.isAnnotationPresent(AppComponentsContainerConfig.class)) {
             throw new IllegalArgumentException(String.format("Given class is not config %s", configClass.getName()));
         }
     }
-
-        @Override
-        public <C> C getAppComponent(Class<C> componentClass) {
-            List<Object> components = appComponents.stream().filter(component -> componentClass.isAssignableFrom(component.getClass())).toList();
-            if (components.size() > 1) {
-                throw new RuntimeException("Component is more then one instance");
-            } else if (components.size() == 0) {
-                throw new RuntimeException("Component is absent in container");
-            }
-            return (C) components.get(0);
-        }
-
-        @Override
-        public <C> C getAppComponent(String componentName) {
-            return (C) Optional.ofNullable(appComponentsByName.get(componentName)).orElseThrow(() -> new RuntimeException("Component is absent in container"));
-        }
-
-        private Object[] getArgs(Parameter[] parameters) {
-            Object[] args = new Object[parameters.length];
-            for (int i = 0; i < args.length; i++) {
-                args[i] = getAppComponent(parameters[i].getType());
-            }
-            return args;
-        }
 }
